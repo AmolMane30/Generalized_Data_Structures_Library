@@ -1215,6 +1215,44 @@ int Queue<T> :: Count()
     return iCount;
 }
 
+//----------------------------------------------------------------------------------------------------------------------------------//
+//              Middle Element
+//----------------------------------------------------------------------------------------------------------------------------------//
+
+template <class T>
+struct nodeMidElement
+{
+    T data;
+    struct nodeMidElement * next;
+};
+
+// Generic Middle Element 
+template <class T>
+void MiddleElement(struct nodeMidElement<T> *head)
+{
+    if(head == NULL)
+    {
+        cout<<"List is empty"<<endl;
+        return;
+    }
+    
+    int iCount = 0, i = 0;
+    struct nodeMidElement<T> * temp = head;
+
+    while(temp != NULL)
+    {
+        iCount++;
+        temp = temp->next;
+    }
+    
+    temp = head;
+    for(i = 1; i <= iCount/2; i++)
+    {
+        temp = temp->next;
+    }
+    
+    cout<<"Middle element is : "<<temp->data<<endl;
+}
 
 //----------------------------------------------------------------------------------------------------------------------------------//
 //              Main Function
@@ -1266,4 +1304,5 @@ int main()
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
+
 //----------------------------------------------------------------------------------------------------------------------------------//
