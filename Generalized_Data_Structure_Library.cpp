@@ -1216,42 +1216,44 @@ int Queue<T> :: Count()
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
-//              Middle Element
+//              Linear Search Algorithem
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 template <class T>
-struct nodeMidElement
+bool LinearSearch(T Brr[], int size, T iNo)
 {
-    T data;
-    struct nodeMidElement * next;
-};
+    bool Flag = false;
+    int i = 0;
+
+    for(i = 0; i < size; i++)
+    {
+        if(iNo == Brr[i])
+        {
+            Flag = true;    // Element found 
+            break;
+        }
+    }
+    
+    return Flag;    // Element not found
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------//
+//              Middle Element
+//----------------------------------------------------------------------------------------------------------------------------------//
 
 // Generic Middle Element 
 template <class T>
-void MiddleElement(struct nodeMidElement<T> *head)
+void MiddleElement(T Brr[], int Size)
 {
-    if(head == NULL)
+    if(Size <= 0)
     {
         cout<<"List is empty"<<endl;
         return;
     }
     
-    int iCount = 0, i = 0;
-    struct nodeMidElement<T> * temp = head;
-
-    while(temp != NULL)
-    {
-        iCount++;
-        temp = temp->next;
-    }
+    int Mid = Size/2;
     
-    temp = head;
-    for(i = 1; i <= iCount/2; i++)
-    {
-        temp = temp->next;
-    }
-    
-    cout<<"Middle element is : "<<temp->data<<endl;
+    cout<<"Middle element is : "<<Brr[Mid]<<endl;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
@@ -1306,3 +1308,4 @@ int main()
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 //----------------------------------------------------------------------------------------------------------------------------------//
+
