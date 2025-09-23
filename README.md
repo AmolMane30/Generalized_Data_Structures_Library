@@ -1,4 +1,4 @@
-# Generalised Data Structures Library
+# Generalized Data Structures Library
 
 ## Technology  
 C++ Programming  
@@ -58,7 +58,7 @@ The library follows **OOP principles**, with modularity and extensibility in min
 ---
 
 ## 📂 GitHub Repository  
-**Generalised Data Structures Library**  
+**Generalized Data Structures Library**  
 🔗 Repository: [github.com/AmolMane30/Generalised-Data-Structures-Library](https://github.com/AmolMane30/Generalised-Data-Structures-Library)  
 
 
