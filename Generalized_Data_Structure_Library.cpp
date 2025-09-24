@@ -2,13 +2,8 @@
 //        Project Title : Generalized Data Structures Library
 //        Technology    : C++ Programming
 //        Description   : # This project is considered as a library which contains generic implementations of all major types of 
-//                         data structures such as -
-//                                               1] Singly Linked List
-//                                               2] Singly Circular Linked List
-//                                               3] Doubly Linked List
-//                                               4] Doubly Circular Linked List
-//                                               5] Stack
-//                                               6] Queue
+//                         data structures.
+//                                              
 //                       # It provides the readymade implementations of all fundamental operations as well as advanced operations on 
 //                         linear, non linear data structures in an object oriented way.
 //                              
@@ -32,9 +27,13 @@ using namespace std;
 
 // Supports generic data types and dynamic memory allocation
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-//                  Singly Linear Linked List
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         SinglyLL
+//  Description :   Generic implementation of Singly Linked List
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 template <class T>
 struct nodeSL 
@@ -269,11 +268,13 @@ int SinglyLL<T> :: Count()
     return iCount;
 }
 
-
-
-//----------------------------------------------------------------------------------------------------------------------------------//
-//                          Singly Circular Linked List
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         SinglyCL
+//  Description :   Generic implementation of Singly Circular Linked List
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 template <class T>
 struct nodeSC 
@@ -510,11 +511,13 @@ int SinglyCL<T> :: Count()
     return iCount;
 }
 
-
-
-//----------------------------------------------------------------------------------------------------------------------------------//
-//              Doubly Linear Linked List
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         DoublyLL
+//  Description :   Generic implementation of Doubly Linked List
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 template <class T>
 struct nodeDL
@@ -754,9 +757,13 @@ int DoublyLL<T> :: Count()
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-//              Doubly Circular Linked List
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         DoublyCL
+//  Description :   Generic implementation of Doubly Circular Linked List
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 template <class T>
 struct nodeDC
@@ -1008,9 +1015,13 @@ int DoublyCL <T> :: Count()
 
 
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-//                           STACK 
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         Stack
+//  Description :   Generic implementation of Stack
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 template <class T>
 struct nodeStack 
@@ -1111,9 +1122,13 @@ int Stack<T> :: Count()
 
 
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-//                      QUEUE
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         Queue
+//  Description :   Generic implementation of Queue
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 template <class T>
 struct nodeQueue
@@ -1215,80 +1230,379 @@ int Queue<T> :: Count()
     return iCount;
 }
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-//              Linear Search Algorithem
-//----------------------------------------------------------------------------------------------------------------------------------//
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         BinarySearchTree
+//  Description :   Generic implementation of Binary Search Tree
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
-template <class T>
-bool LinearSearch(T Brr[], int size, T iNo)
+template<class T>
+struct nodeBST
 {
-    bool Flag = false;
-    int i = 0;
+    T data;
+    nodeBST<T> *lchild;
+    nodeBST<T> *rchild;
+};
 
-    for(i = 0; i < size; i++)
+template<class T>
+class BinarySearchTree
+{
+    private:
+        nodeBST<T> * head;
+
+        // private helper for recursion
+        void InorderR(nodeBST<T>* temp);
+        void PreorderR(nodeBST<T>* temp);
+        void PostorderR(nodeBST<T>* temp);
+        bool SearchR(nodeBST<T>* temp, T no);
+        int CountNodesR(nodeBST<T>* temp);
+        int CountParentNodesR(nodeBST<T>* temp);
+        int CountLeafNodesR(nodeBST<T>* temp);
+
+    public:
+        BinarySearchTree();
+        void Insert(T no);
+        void Inorder();
+        void Preorder();
+        void Postorder();
+        bool Search(T no);
+        int CountNodes();
+        int CountParentNodes();
+        int CountLeafNodes();
+};
+
+// constructor
+template<class T>
+BinarySearchTree<T>::BinarySearchTree()
+{
+    cout<<"Insdie constructor of BST\n";
+    this->head = NULL;
+
+}
+
+// insert function
+template<class T>
+void BinarySearchTree<T>::Insert(T no)
+{
+    nodeBST<T> * newn = NULL;
+    nodeBST<T> * temp = NULL;
+
+    newn = new nodeBST<T>;
+    newn->data = no;
+    newn->lchild = NULL;
+    newn->rchild = NULL;
+
+    if(head == NULL)   // Tree is empty
     {
-        if(iNo == Brr[i])
+        head = newn;
+        return;
+    }
+    else    // Tree contains at least one node
+    {
+        temp = head;
+
+        while(1)
         {
-            Flag = true;    // Element found 
-            break;
+            if(no > temp->data) // Greater
+            {
+                if(temp->rchild == NULL)
+                {
+                    temp->rchild = newn;
+                    break;
+                }
+                temp = temp->rchild;
+            }
+            else if(no < temp->data)    // Smaller
+            {
+                if(temp->lchild == NULL)
+                {
+                    temp->lchild = newn;
+                    break;
+                }
+                temp = temp->lchild;
+            }
+            else if(no == temp->data)   // Identical
+            {
+                cout<<"Unable to insert as element is duplicate\n";
+                delete newn;
+                break;
+            }
         }
     }
-    
-    return Flag;    // Element not found
+}
+
+// Public wrappers
+template<class T>
+void BinarySearchTree<T>::Inorder()   { InorderR(head); cout<<"\n"; }
+
+template<class T>
+void BinarySearchTree<T>::Preorder()  { PreorderR(head); cout<<"\n"; }
+
+template<class T>
+void BinarySearchTree<T>::Postorder() { PostorderR(head); cout<<"\n"; }
+
+template<class T>
+bool BinarySearchTree<T>::Search(T no) { return SearchR(head,no); }
+
+template<class T>
+int BinarySearchTree<T>::CountNodes() { return CountNodesR(head); }
+
+template<class T>
+int BinarySearchTree<T>::CountParentNodes() { return CountParentNodesR(head); }
+
+template<class T>
+int BinarySearchTree<T>::CountLeafNodes() { return CountLeafNodesR(head); }
+
+// private helpers
+template <class T>
+void BinarySearchTree<T>::InorderR(nodeBST<T>* temp)
+{
+    if(temp != NULL)
+    {
+        InorderR(temp->lchild);
+        cout<<temp->data<<" ";
+        InorderR(temp->rchild);
+    }
+}
+
+template <class T>
+void BinarySearchTree<T>::PreorderR(nodeBST<T>* temp)
+{
+    if(temp != NULL)
+    {
+        cout<<temp->data<<" ";
+        PreorderR(temp->lchild);
+        PreorderR(temp->rchild);
+    }
+}
+
+template <class T>
+void BinarySearchTree<T>::PostorderR(nodeBST<T>* temp)
+{
+    if(temp != NULL)
+    {
+        PostorderR(temp->lchild);
+        PostorderR(temp->rchild);
+        cout<<temp->data<<" ";
+    }
+}
+
+template <class T>
+bool BinarySearchTree<T>::SearchR(nodeBST<T>* temp, T no)
+{
+    bool bFlag = false;
+
+    while(temp != NULL)
+    {
+        if(no == temp->data)
+        {
+            bFlag = true;
+            break;
+        }
+        else if(no > temp->data)
+        {
+            temp = temp->rchild;
+        }
+        else if(no < temp->data)
+        {
+            temp = temp->lchild;
+        }
+    }
+    return bFlag;
+}
+
+template <class T>
+int BinarySearchTree<T>::CountNodesR(nodeBST<T>* temp)
+{
+    if(temp == NULL)
+        return 0;
+
+    return 1 + CountNodesR(temp->lchild) + CountNodesR(temp->rchild);
+}
+
+template <class T>
+int BinarySearchTree<T>::CountParentNodesR(nodeBST<T>* temp)
+{
+   if(temp == NULL)
+        return 0;
+
+    int count = 0;
+    if(temp->lchild != NULL || temp->rchild != NULL) // only parent nodes
+        count = 1;
+
+    return count + CountParentNodesR(temp->lchild) + CountParentNodesR(temp->rchild); 
+}
+
+template <class T>
+int BinarySearchTree<T>::CountLeafNodesR(nodeBST<T>* temp)
+{
+    if(temp == NULL)
+        return 0;
+    if(temp->lchild == NULL && temp->rchild == NULL)
+        return 1;
+    return CountLeafNodesR(temp->lchild) + CountLeafNodesR(temp->rchild);
+}
+
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         SearchingAlgorithems
+//  Description :   Generic implementation of -
+//                                            Linear Search
+//                                            Linear Bidirectional Search
+//                                            Binary Search
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
+
+template <class T>
+class SearchingAlgorithems
+{
+    private:
+        T* Arr;
+        int size;
+
+    public:
+        SearchingAlgorithems(T* array, int n);
+        bool LinearSearch(T iNo);
+        bool LinearSearchBidirectional(T Value);
+        bool BinarySearch(T iNo);
+};
+
+// constructor
+template <class T>
+SearchingAlgorithems<T>::SearchingAlgorithems(T* array, int n)
+{
+    Arr = array;
+    size = n;
+}
+
+//---------------------------------------------------------//
+// Linear Search definition
+//---------------------------------------------------------//
+template <class T>
+bool SearchingAlgorithems<T>::LinearSearch(T iNo)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (Arr[i] == iNo)
+            return true; // Element found
+    }
+    return false; // Not found
+}
+
+//---------------------------------------------------------//
+// Linear Search Bidirectional definition
+//---------------------------------------------------------//
+template <class T>
+bool SearchingAlgorithems<T>::LinearSearchBidirectional(T Value)
+{
+    int iStart = 0, iEnd = size - 1;
+    while (iStart <= iEnd)
+    {
+        if (Arr[iStart] == Value || Arr[iEnd] == Value)
+            return true; // Element found
+        iStart++;
+        iEnd--;
+    }
+    return false; // Not found
+}
+
+//---------------------------------------------------------//
+// Binary Search definition
+//---------------------------------------------------------//
+template <class T>
+bool SearchingAlgorithems<T>::BinarySearch(T iNo)
+{
+    int iStart = 0, iEnd = size - 1;
+    while (iStart <= iEnd)
+    {
+        int iMid = iStart + (iEnd - iStart) / 2;
+
+        if (Arr[iMid] == iNo)
+            return true; // Found
+        else if (iNo > Arr[iMid])
+            iStart = iMid + 1; // Right half
+        else
+            iEnd = iMid - 1;   // Left half
+    }
+    return false; // Not found
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
-//              LinearSearchBidirectional
+//              Bubble Sort
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 template<class T>
-bool LinearSearchBidirectional(T Brr, int isize, T Value)
+void BubbleSort(T Brr[], int size)
 {
-    int iStart = 0, iEnd = isize-1;
-    bool Flag = false;
-    
-    for(iStart = 0; iStart <= iEnd; iStart++, iEnd--)
+    int i = 0, j = 0;
+    T temp;
+
+    for(i = 0; i < size; i++)
     {
-        if(Brr[iStart] == Value || Brr[iEnd] == Value)
+        for(j = 0; j < size - i - 1; j++)
         {
-            Flag = true;    // Element Found
-            break;
+            if(Brr[j] > Brr[j+1])
+            {
+                temp = Brr[j];
+                Brr[j] = Brr[j + 1];
+                Brr[j + 1] = temp;
+            }
         }
     }
-    return Flag;    // Element not found.
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
-//              BinarySearch
+//              Selection Sort
 //----------------------------------------------------------------------------------------------------------------------------------//
 
-BinarySearch(int Brr[], int iNo)
+template <class T>
+void SelectionSort(T Brr[], int size)
+{
+    int i = 0, j = 0, min_index = 0;
+    T temp;
+
+    for(i = 0; i < size; i++)
     {
-        int iStart = 0, iMid = 0, iEnd = Brr.length-1;
-        boolean bResult = false;
-
-        while(iStart <= iEnd)
+        min_index = i;
+        
+        for(j = i+1; j < size; j++)
         {
-            iMid = iStart + (iEnd - iStart) / 2;
-
-            if(Brr[iMid] == iNo)
+            if(Brr[min_index] > Brr[j])
             {
-                bResult = true;
-                break;
-            }
-            
-            if(iNo > Brr[iMid])
-            {
-                iStart = iMid + 1;
-            }
-            else
-            {
-                iEnd = iMid - 1;
+                min_index = j;
             }
         }
-        return bResult;
+        if(i != min_index)
+        {
+            temp = Brr[i];
+            Brr[i] = Brr[min_index];
+            Brr[min_index] = temp;
+        }
     }
+}
 
+//----------------------------------------------------------------------------------------------------------------------------------//
+//              Insertion Sort
+//----------------------------------------------------------------------------------------------------------------------------------//
+
+template<class T>
+void InsertionSort(T Brr[], int size)
+{
+    int i = 0, j = 0;
+    T selected;
+
+    for(i = 1; i < size; i++)
+    {
+        for(j = i-1, selected = Brr[i]; ((j >= 0) && (Brr[j] > selected)); j--)
+        {
+            Brr[j + 1] = Brr[j];
+        }   
+        Brr[j + 1] = selected;
+    } 
+}
 
 //----------------------------------------------------------------------------------------------------------------------------------//
 //              Middle Element
@@ -1315,6 +1629,7 @@ void MiddleElement(T Brr[], int Size)
 
 int main()
 {
+    // SinglyLL
     SinglyLL<int> sobj;
     sobj.InsertFirst(11);
     sobj.InsertLast(51);
@@ -1326,6 +1641,7 @@ int main()
     sobj.Display();
     cout<<"Number of elements : "<<sobj.Count()<<endl;
 
+    // Stack
     Stack<int> s;
 
     s.push(10);
@@ -1340,6 +1656,7 @@ int main()
 
     cout << "Stack Count: " << s.Count() << "\n\n";
 
+    // Queue
     Queue<int> qobj;
 
     qobj.enqueue(100);
@@ -1355,11 +1672,37 @@ int main()
 
     cout << "Queue Count: " << qobj.Count() << "\n";
 
+
+    // BST
+    BinarySearchTree<int> bobj;
+
+    bobj.Insert(10);
+    bobj.Insert(50);
+    bobj.Insert(30);
+    bobj.Insert(25);
+    bobj.Insert(75);
+    bobj.Insert(60);
+
+    bobj.Inorder();
+    bobj.Preorder();
+    bobj.Postorder();
+
+    if(bobj.Search(30)) cout<<"Found\n";
+    else  cout<<"Not found\n";
+
+    if(bobj.Search(100)) cout<<"Found\n";
+    else cout<<"Not Found\n";
+
+    cout<<bobj.CountLeafNodes()<<"\n";
+    cout<<bobj.CountNodes()<<endl;
+    cout<<bobj.CountParentNodes()<<endl;
+
     return 0;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 //----------------------------------------------------------------------------------------------------------------------------------//
+
 
 
