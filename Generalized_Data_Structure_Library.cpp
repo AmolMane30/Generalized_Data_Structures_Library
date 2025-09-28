@@ -1279,7 +1279,6 @@ BinarySearchTree<T>::BinarySearchTree()
 {
     cout<<"Insdie constructor of BST\n";
     this->head = NULL;
-
 }
 
 // insert function
@@ -1464,7 +1463,10 @@ class SearchingAlgorithems
         int size;
 
     public:
-        SearchingAlgorithems(T* array, int n);
+        SearchingAlgorithems(int n);
+        ~SearchingAlgorithems();
+        void Accept();
+        void Display();
         bool LinearSearch(T iNo);
         bool LinearSearchBidirectional(T Value);
         bool BinarySearch(T iNo);
@@ -1472,15 +1474,43 @@ class SearchingAlgorithems
 
 // constructor
 template <class T>
-SearchingAlgorithems<T>::SearchingAlgorithems(T* array, int n)
+SearchingAlgorithems<T>::SearchingAlgorithems(int n)
 {
-    Arr = array;
     size = n;
+    Arr = new T[size];
 }
 
-//---------------------------------------------------------//
-// Linear Search definition
-//---------------------------------------------------------//
+template<class T>
+SearchingAlgorithems<T>::~SearchingAlgorithems()
+{
+    delete[] Arr;    
+}
+
+template<class T>
+void SearchingAlgorithems<T>::Accept()
+{
+    int i = 0;
+    cout<<"Enter the elements : \n";
+    for( i = 0; i < size; i++)
+    {
+        cin>>Arr[i];            
+    }
+}
+
+template<class T>
+void SearchingAlgorithems<T>::Display()
+{
+    int i = 0;
+    cout<<"Elements of the array are : \n";
+    for( i = 0; i < size; i++)
+    {
+        cout<<Arr[i]<<" ";            
+    }
+    cout<<"\n";
+}
+//----------------------------------------------------------------------------------------------------------------------------------//
+//             Linear Search 
+//----------------------------------------------------------------------------------------------------------------------------------//
 template <class T>
 bool SearchingAlgorithems<T>::LinearSearch(T iNo)
 {
@@ -1492,9 +1522,9 @@ bool SearchingAlgorithems<T>::LinearSearch(T iNo)
     return false; // Not found
 }
 
-//---------------------------------------------------------//
-// Linear Search Bidirectional definition
-//---------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------------//
+//             Linear Search Bidirectional 
+//----------------------------------------------------------------------------------------------------------------------------------//
 template <class T>
 bool SearchingAlgorithems<T>::LinearSearchBidirectional(T Value)
 {
@@ -1509,9 +1539,9 @@ bool SearchingAlgorithems<T>::LinearSearchBidirectional(T Value)
     return false; // Not found
 }
 
-//---------------------------------------------------------//
-// Binary Search definition
-//---------------------------------------------------------//
+//----------------------------------------------------------------------------------------------------------------------------------//
+//                 Binary Search 
+//----------------------------------------------------------------------------------------------------------------------------------//
 template <class T>
 bool SearchingAlgorithems<T>::BinarySearch(T iNo)
 {
@@ -1530,12 +1560,78 @@ bool SearchingAlgorithems<T>::BinarySearch(T iNo)
     return false; // Not found
 }
 
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         SortingAlgorithems
+//  Description :   Generic implementation of -
+//                                            Bubble Sort
+//                                            Selection Sort
+//                                            Insertion Search
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
+
+template<class T>
+class SortingAlgorithems
+{
+    private:
+        T* Arr;
+        int size;
+
+    public:
+        SortingAlgorithems(int n);
+        ~SortingAlgorithems();
+        void Accept();
+        void Display();
+        void BubbleSort();
+        void SelectionSort();
+        void InsertionSort();
+};
+
+// Constructor
+template<class T>
+SortingAlgorithems<T>::SortingAlgorithems(int n)
+{
+    size = n;
+    Arr = new T[size];
+}
+
+// Destructor
+template<class T>
+SortingAlgorithems<T>::~SortingAlgorithems()
+{
+    delete[] Arr;
+}
+
+template<class T>
+void SortingAlgorithems<T>::Accept()
+{
+    int i = 0;
+    cout<<"Enter the elements : \n";
+    for(i = 0; i < size; i++)
+    {
+        cin>>Arr[i];            
+    }
+}
+
+template<class T>
+void SortingAlgorithems<T>::Display()
+{
+    int i = 0;
+    cout<<"Elements of the array are : \n";
+    for(i = 0; i < size; i++)
+    {
+        cout<<Arr[i]<<" ";
+    }
+    cout<<"\n";
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------//
 //              Bubble Sort
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 template<class T>
-void BubbleSort(T Brr[], int size)
+void SortingAlgorithems<T> :: BubbleSort()
 {
     int i = 0, j = 0;
     T temp;
@@ -1544,11 +1640,11 @@ void BubbleSort(T Brr[], int size)
     {
         for(j = 0; j < size - i - 1; j++)
         {
-            if(Brr[j] > Brr[j+1])
+            if(Arr[j] > Arr[j+1])
             {
-                temp = Brr[j];
-                Brr[j] = Brr[j + 1];
-                Brr[j + 1] = temp;
+                temp = Arr[j];
+                Arr[j] = Arr[j + 1];
+                Arr[j + 1] = temp;
             }
         }
     }
@@ -1559,7 +1655,7 @@ void BubbleSort(T Brr[], int size)
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 template <class T>
-void SelectionSort(T Brr[], int size)
+void SortingAlgorithems<T> :: SelectionSort()
 {
     int i = 0, j = 0, min_index = 0;
     T temp;
@@ -1570,16 +1666,16 @@ void SelectionSort(T Brr[], int size)
         
         for(j = i+1; j < size; j++)
         {
-            if(Brr[min_index] > Brr[j])
+            if(Arr[min_index] > Arr[j])
             {
                 min_index = j;
             }
         }
         if(i != min_index)
         {
-            temp = Brr[i];
-            Brr[i] = Brr[min_index];
-            Brr[min_index] = temp;
+            temp = Arr[i];
+            Arr[i] = Arr[min_index];
+            Arr[min_index] = temp;
         }
     }
 }
@@ -1589,20 +1685,30 @@ void SelectionSort(T Brr[], int size)
 //----------------------------------------------------------------------------------------------------------------------------------//
 
 template<class T>
-void InsertionSort(T Brr[], int size)
+void SortingAlgorithems<T> :: InsertionSort()
 {
     int i = 0, j = 0;
     T selected;
 
     for(i = 1; i < size; i++)
     {
-        for(j = i-1, selected = Brr[i]; ((j >= 0) && (Brr[j] > selected)); j--)
+        for(j = i-1, selected = Arr[i]; ((j >= 0) && (Arr[j] > selected)); j--)
         {
-            Brr[j + 1] = Brr[j];
+            Arr[j + 1] = Arr[j];
         }   
-        Brr[j + 1] = selected;
+        Arr[j + 1] = selected;
     } 
 }
+
+///////////////////////////////////////////////////////////////////////
+//
+//  Class :         MiddleElement
+//  Description :   Generic implementation of Middle Element
+//
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
+
 
 //----------------------------------------------------------------------------------------------------------------------------------//
 //              Middle Element
@@ -1610,22 +1716,78 @@ void InsertionSort(T Brr[], int size)
 
 // Generic Middle Element 
 template <class T>
-void MiddleElement(T Brr[], int Size)
+class MiddleElement
 {
-    if(Size <= 0)
+    private:
+        T* Arr;
+        int size;
+
+    public:
+        MiddleElement(int n);
+        ~MiddleElement();
+
+        void Accept();
+        void Display();
+        void MidElement();
+};
+
+template<class T>
+MiddleElement<T> :: MiddleElement(int n)
+{
+    size = n;
+    Arr = new T[size];
+}
+
+template<class T>
+MiddleElement<T> :: ~MiddleElement()
+{
+    delete []Arr;
+}
+
+template<class T>
+void MiddleElement<T> :: Accept()
+{
+    int i = 0;
+    cout<<"Enter the elements of array : \n";
+    for(i = 0; i < size; i++)
+    {
+        cin>>Arr[i];
+    }
+}
+
+template<class T>
+void MiddleElement<T> :: Display()
+{
+    int i = 0;
+    cout<<"Elements of the array are : \n";
+    for(i = 0; i < size; i++)
+    {
+        cout<<Arr[i]<<" ";
+    }
+    cout<<"\n";
+}
+
+template<class T>
+void MiddleElement<T> :: MidElement()
+{
+    if(size <= 0)
     {
         cout<<"List is empty"<<endl;
         return;
     }
     
-    int Mid = Size/2;
+    int Mid = size/2;
     
-    cout<<"Middle element is : "<<Brr[Mid]<<endl;
+    cout<<"Middle element is : "<<Arr[Mid]<<endl;
 }
 
-//----------------------------------------------------------------------------------------------------------------------------------//
-//              Main Function
-//----------------------------------------------------------------------------------------------------------------------------------//
+////////////////////////////////////////////////////////////////////////
+//
+//  Function :      main()
+//  Description :   Entry point function
+//  Author :        Amol R. Mane
+//
+///////////////////////////////////////////////////////////////////////
 
 int main()
 {
@@ -1697,12 +1859,23 @@ int main()
     cout<<bobj.CountNodes()<<endl;
     cout<<bobj.CountParentNodes()<<endl;
 
+    // sorting algorithems
+    int n = 0;
+    cin>>n;
+
+    SortingAlgorithems<int> obj(n);
+    obj.Accept();
+    obj.Display();
+
+    obj.BubbleSort();
+    obj.Display();
+
+    obj.Accept();
+    obj.SelectionSort();
+    obj.Display();
+
     return 0;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
-
 //----------------------------------------------------------------------------------------------------------------------------------//
-
-
-
