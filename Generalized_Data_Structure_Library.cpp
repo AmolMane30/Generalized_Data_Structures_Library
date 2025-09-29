@@ -209,8 +209,8 @@ void SinglyLL<T> :: DeleteLast()
         delete temp->next;
         temp->next = NULL;
 
-        iCount--;
     }
+    iCount--;
 }
 
 template <class T>
@@ -392,8 +392,11 @@ void SinglyCL<T> :: InsertAtPos(T no, int ipos)
     else
     {
         temp = head;
+        newn = new nodeSC<T>;
+        newn->data = no;
+        newn->next = NULL;
 
-        for(int i = 0; i < ipos-1; i++)
+        for(int i = 1; i < ipos-1; i++)
         {
             temp = temp->next;
         }
@@ -621,6 +624,7 @@ void DoublyLL<T> :: InsertAtPos(T no, int ipos)
     if(ipos < 1 || ipos > iCount+1)
     {
         cout<<"Invalid Position\n";
+        return;
     }
 
     if(ipos == 1)
@@ -647,8 +651,9 @@ void DoublyLL<T> :: InsertAtPos(T no, int ipos)
         newn->next->prev = newn;
         temp->next = newn;
         newn->prev = temp;
+
+        iCount++;
     }
-    iCount++;
 }
 
 template <class T>
@@ -708,6 +713,7 @@ void DoublyLL<T> :: DeleteAtPos(int ipos)
     if(ipos < 1 || ipos > iCount)
     {
         cout<<"Invalid Position\n";
+        return;
     }
 
     if(ipos == 1)
@@ -727,11 +733,13 @@ void DoublyLL<T> :: DeleteAtPos(int ipos)
             temp = temp->next;
         }
         target = temp->next;
-        temp->next = temp->next->next;
-        target->prev = temp;
+        temp->next = target->next;
+        target->next->prev = temp;
         delete (target);
+
+        iCount--;
     }
-    iCount--;
+    
 }
 
 template <class T>
@@ -902,8 +910,9 @@ void DoublyCL<T> :: InsertAtPos(T no, int ipos)
         newn->next->prev = newn;
         temp->next = newn;
         temp->next->prev = temp;
+        
+        iCount++;
     }
-    iCount++;
 }
 
 template <class T>
@@ -974,16 +983,22 @@ void DoublyCL<T> :: DeleteAtPos(int ipos)
     else
     {
         temp = head;
+        struct nodeDC<T> * target = NULL;
 
         for(int i = 1; i < ipos-1; i++)
         {
             temp = temp->next;
         }
-        temp->next = temp->next->next;
-        delete (temp->next->prev);
-        temp->next->prev = temp;
+        target = temp->next;
+        temp->next = target->next;
+        target->next->prev = temp;
+        delete target;
+        
+        // temp->next = temp->next->next;
+        // delete (temp->next->prev);
+        // temp->next->prev = temp;
+        iCount--;
     }
-    iCount--;
 }
 
 template <class T>
@@ -1277,7 +1292,6 @@ class BinarySearchTree
 template<class T>
 BinarySearchTree<T>::BinarySearchTree()
 {
-    cout<<"Insdie constructor of BST\n";
     this->head = NULL;
 }
 
@@ -1532,7 +1546,9 @@ bool SearchingAlgorithems<T>::LinearSearchBidirectional(T Value)
     while (iStart <= iEnd)
     {
         if (Arr[iStart] == Value || Arr[iEnd] == Value)
+        {
             return true; // Element found
+        }
         iStart++;
         iEnd--;
     }
@@ -1793,8 +1809,9 @@ int main()
 {
     // SinglyLL
     SinglyLL<int> sobj;
+    sobj.InsertFirst(51);
     sobj.InsertFirst(11);
-    sobj.InsertLast(51);
+    sobj.InsertLast(75);
     sobj.InsertAtPos(21,2);
     sobj.Display();
     cout<<"Number of elements : "<<sobj.Count()<<endl;
@@ -1802,10 +1819,11 @@ int main()
     sobj.DeleteAtPos(2);
     sobj.Display();
     cout<<"Number of elements : "<<sobj.Count()<<endl;
-
+    cout<<"\n";
     // Stack
     Stack<int> s;
 
+    cout<<"Stack elements are : \n";
     s.push(10);
     s.push(20);
     s.push(30);
@@ -1814,6 +1832,7 @@ int main()
 
     s.pop();      // Removes 30
 
+    cout<<"Elements after popping : \n";
     s.Display();  // show 20 -> 10
 
     cout << "Stack Count: " << s.Count() << "\n\n";
@@ -1821,6 +1840,7 @@ int main()
     // Queue
     Queue<int> qobj;
 
+    cout<<"Queue elements are : \n";
     qobj.enqueue(100);
     qobj.enqueue(200);
     qobj.enqueue(300);
@@ -1830,14 +1850,16 @@ int main()
 
     qobj.dequeue();  // Removes 100
 
+    cout<<"Elements in Queue after popping : \n";
     qobj.Display();  // show 200 -> 300
 
-    cout << "Queue Count: " << qobj.Count() << "\n";
+    cout << "Queue Count: " << qobj.Count() << "\n\n";
 
 
     // BST
     BinarySearchTree<int> bobj;
 
+    cout<<"Binary Search Tree : \n";
     bobj.Insert(10);
     bobj.Insert(50);
     bobj.Insert(30);
@@ -1845,37 +1867,86 @@ int main()
     bobj.Insert(75);
     bobj.Insert(60);
 
+    cout<<"Inorder : \n";
     bobj.Inorder();
+    cout<<"Preorder : \n";
     bobj.Preorder();
+    cout<<"Postorder : \n";
     bobj.Postorder();
+    cout<<"\n";
 
     if(bobj.Search(30)) cout<<"Found\n";
-    else  cout<<"Not found\n";
+    else  cout<<"Not found\n\n";
 
     if(bobj.Search(100)) cout<<"Found\n";
-    else cout<<"Not Found\n";
+    else cout<<"Not Found\n\n";
 
+    cout<<"No. of leaf nodes are : ";
     cout<<bobj.CountLeafNodes()<<"\n";
+
+    cout<<"No. of nodes are : ";
     cout<<bobj.CountNodes()<<endl;
-    cout<<bobj.CountParentNodes()<<endl;
+
+    cout<<"No. of parent nodes are : ";
+    cout<<bobj.CountParentNodes()<<endl<<"\n";
 
     // sorting algorithems
+    cout<<"Sorting Algorithms : \n";
     int n = 0;
+    cout<<"Enter the size of array : \n";
     cin>>n;
+    cout<<"\n";
 
-    SortingAlgorithems<int> obj(n);
-    obj.Accept();
-    obj.Display();
+    SortingAlgorithems<int> sortobj(n);
+    sortobj.Accept();
+    cout<<"\n";
+    sortobj.Display();
+    cout<<"\n";
 
-    obj.BubbleSort();
-    obj.Display();
+    cout<<"Elements after Bubble Sort is : \n";
+    sortobj.BubbleSort();
+    sortobj.Display();
+    cout<<"\n";
 
-    obj.Accept();
-    obj.SelectionSort();
-    obj.Display();
+    sortobj.Accept();
+    cout<<"\n";
+    cout<<"Elements after Selection sort is : \n";
+    sortobj.SelectionSort();
+    sortobj.Display();
+    cout<<"\n";
+
+    // searching algos
+    cout<<"Searching Alogrithems\n";
+    int length, key;
+    cout << "Enter number of elements: ";
+    cin >> length;
+
+    SearchingAlgorithems<int> searchobj(length); 
+    searchobj.Accept();
+
+    cout << "Enter element to search: ";
+    cin >> key;
+
+    cout << "\n--- Searching Results ---\n";
+
+    if(searchobj.LinearSearch(key))
+        cout << "Linear Search: Element found\n";
+    else
+        cout << "Linear Search: Element not found\n";
+
+    if(searchobj.LinearSearchBidirectional(key))
+        cout << "Bi-directional Linear Search: Element found\n";
+    else
+        cout << "Bi-directional Linear Search: Element not found\n";
+
+    if(searchobj.BinarySearch(key))
+        cout << "Binary Search: Element found\n";
+    else
+        cout << "Binary Search: Element not found\n";
 
     return 0;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------//
 //----------------------------------------------------------------------------------------------------------------------------------//
+
